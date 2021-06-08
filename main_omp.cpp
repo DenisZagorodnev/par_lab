@@ -6,10 +6,10 @@
 
 
 const int num_repetitions = 10;
-const int num_threads = 1;
+const int num_threads = 4;
 
 int main(int argc, const char *argv[]) {
-    size_t N = (size_t) powl(10, 7);
+    size_t N = (size_t) powl(10, 9);
 
     std::vector<float> arr(N);
 
@@ -19,5 +19,8 @@ int main(int argc, const char *argv[]) {
         fill_up_vector(arr, 0, arr.size());
     });
 
+    time_call(num_repetitions, [&] () {
+        resample_vector(arr, 0, arr.size());
+    });
     return 0;
 }
