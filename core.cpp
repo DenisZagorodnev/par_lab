@@ -13,10 +13,7 @@ float get_random() {
     return dis(e);
 }
 
-
 void fill_up_vector(std::vector<float> &arr, long from, long to) {
-    std::cout << "filling up array from " << from << " to " << to << std::endl;
-
 
 #pragma omp parallel for
     for (long i = from; i < to; i++) {
@@ -26,22 +23,23 @@ void fill_up_vector(std::vector<float> &arr, long from, long to) {
 }
 
 
-void resample_vector(std::vector<float> &arr, long from, long to) {
-    std::cout << "resampling up array from " << from << " to " << to << std::endl;
+void resample_vector(std::vector<float> &arr, long from, long to, float next) {
 
 #pragma omp parallel for
-    for (long i = from; i < to; i++) {
+    for (long i = from; i < to - 1; i++) {
         arr[i] = arr[i] + arr[i + 1];
     }
+    arr[to - 1] = next + arr[to - 1];
 }
 
 
-void print_array(float *arr, size_t n) {
+void print_array(std::vector<float> &arr) {
 
-    if (n > 20) {
+    if (arr.size() > 20) {
         return;
     }
-    for (size_t i = 0; i < n; i++) {
-        std::cout << "arr[" << i << "] = " << arr[i] << std::endl;
+    for (size_t i = 0; i < arr.size(); i++) {
+        std::cout << arr[i] << ", ";
     }
+    std::cout << std::endl;
 }

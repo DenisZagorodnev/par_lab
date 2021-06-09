@@ -3,7 +3,8 @@
 #include "defs.h"
 #include <mpi.h>
 #include <cstdlib>
-
+#include <math.h>
+#include <unistd.h>
 
 const int num_repetitions = 10;
 const int num_threads = 2;
@@ -11,15 +12,22 @@ const int num_threads = 2;
 int main(int argc, const char *argv[]) {
 
    const int num_threads = 2;
-//   size_t N = (size_t) powl(10, 9);
-//   int rank;
-//   int root = 0;
+   size_t N = (size_t) powl(10, 9);
+   int rank;
+   int root = 0;
 //
-//   rc= MPI_Init(&argc, &argv);
-//
+//   int rc = MPI_Init(&argc, &argv);
+//   if (rc != MPI_SUCCESS)
+//    {
+//        std::cout << 'so saaaad mpi failed'<< std::endl;
+//        MPI_Abort(MPI_COMM_WORLD, rc);
+//    }
+
+
 //   MPI_Comm_size(MPI_COMM_WORLD, &num_threads);
 //   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 //   MPI_Barrier(MPI_COMM_WORLD);
+
 //
 //   long bunch_size = (arr.size() + num_threads - 1) / num_threads;
 //   size_t N = (size_t) powl(10, 7);
