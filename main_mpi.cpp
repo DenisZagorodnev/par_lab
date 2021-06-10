@@ -37,13 +37,20 @@ int main(int argc, char *argv[]) {
 
     MPI_Gather(&bunch[0], bunch_size, MPI_FLOAT, arr, bunch_size, MPI_FLOAT, root, MPI_COMM_WORLD);
 
+    MPI_Scatter(arr, int sendcount, MPI_Datatype sendtype,
+            void *recvbuf, int recvcount, MPI_Datatype recvtype, int root, MPI_Comm comm);
+
+    float next;
+    resample_vector(bunch, 0, bunch.size(), next);
+
+
     if(my_rank == root){
         for (size_t i = 0; i < N; i++) {
             std::cout << arr[i] << ", ";
         }
         std::cout << std::endl;
     }
-    
+
 
     MPI_Finalize();
 
