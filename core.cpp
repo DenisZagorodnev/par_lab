@@ -13,11 +13,17 @@ float get_random() {
     return dis(e);
 }
 
+float get_my_random() {
+    static float r = 0;
+    r += 1;
+    return r;
+}
+
 void fill_up_vector(std::vector<float> &arr, long from, long to) {
 
 #pragma omp parallel for
     for (long i = from; i < to; i++) {
-        arr[i] = get_random();
+        arr[i] = get_my_random();
     }
 
 }
