@@ -24,10 +24,14 @@ cmake -DCMAKE_BUILD_TYPE=Release ..
 make
 ```
 
-## Run
+## Run threaded
 
 ```shell
-./app_threaded
+./cmake-build-release/app_threaded
 ```
 
+## Run MPI
 
+```shell
+mpirun -np 2 ./cmake-build-release/app_mpi 
+```
