@@ -22,8 +22,8 @@ int main(int argc, char *argv[]) {
     int my_rank = -1;
     MPI_Comm_rank(MPI_COMM_WORLD, &my_rank);
     std::cout << my_rank << " out of " << num_ranks << std::endl;
-    //size_t N = (size_t) powl(10, 9);
-    size_t N = 6;
+    size_t N = (size_t) powl(10, 9);
+    //size_t N = 6;
     long bunch_size = (N + num_ranks - 1) / num_ranks;
     int root = 0;
 
@@ -37,12 +37,32 @@ int main(int argc, char *argv[]) {
 
     MPI_Gather(&bunch[0], bunch_size, MPI_FLOAT, arr, bunch_size, MPI_FLOAT, root, MPI_COMM_WORLD);
 
-    MPI_Scatter(arr, int sendcount, MPI_Datatype sendtype,
-            void *recvbuf, int recvcount, MPI_Datatype recvtype, int root, MPI_Comm comm);
+    if(my_rank == root){
+        for (size_t i = 0; i < N; i++) {
+            std::cout << arr[i] << ", ";
+        }
+        std::cout << std::endl;
+    }
 
+// чтобы сделать resample_vector сегмента требуется получить(recive) первый элемент следующего(source) сегмента
+// при этом свой первый передается(send) предыдущему(dest)
+    float first = bunch[0];
     float next;
+    int dest = my_rank - 1;
+    if(dest < 0){
+        dest = num_ranks - 1;
+    }
+    int source = my_rank + 1;
+    if(source == num_ranks){
+        source = 0;
+    }
+    MPI_Sendrecv(&first, 1, MPI_FLOAT, dest, 0,
+                 &next,  1, MPI_FLOAT, source, 0,
+                 MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+
     resample_vector(bunch, 0, bunch.size(), next);
 
+    MPI_Gather(&bunch[0], bunch_size, MPI_FLOAT, arr, bunch_size, MPI_FLOAT, root, MPI_COMM_WORLD);
 
     if(my_rank == root){
         for (size_t i = 0; i < N; i++) {
