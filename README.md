@@ -33,5 +33,6 @@ make
 ## Run MPI
 
 ```shell
-mpirun -np 2 ./cmake-build-release/app_mpi 
+rm -f res_mpi.csv
+for i in 1 2 4 8 16 ; do mpirun -np $i ./app_mpi ; done
 ```
